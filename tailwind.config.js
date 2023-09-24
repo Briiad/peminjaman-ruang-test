@@ -11,7 +11,11 @@ module.exports = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'campus-room': 'url("/bg-campus-room.jpg")',
       },
+      colors: {
+        'uin-green' : '#35ab3d'
+      }
     },
   },
   plugins: [],
