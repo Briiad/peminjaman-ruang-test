@@ -8,7 +8,7 @@ const Model = require('../model/model');
 module.exports = router;
 
 //Post Method
-router.post('/post', async (req, res) => {
+router.post('/book_room', async (req, res) => {
   const data = new Model({
     nim: req.body.nim,
     name: req.body.name,

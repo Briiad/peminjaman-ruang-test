@@ -1,3 +1,5 @@
+"use client"
+
 // Imports
 import Nav from '@/components/Nav.js'
 import LandingPage from '@/components/LandingPage.js'

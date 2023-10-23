@@ -1,4 +1,46 @@
+import { useState } from 'react';
+
 export default function LandingPage() {
+
+  // State for the data to submit
+  const [data, setData] = useState({
+    name: "",
+    nim: "",
+    room: "",
+    startTime: "",
+    endTime: "",
+    date: ""
+  });
+
+  // Submit to API w/ POST method
+  const submitData = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch("http://localhost:5000/api/book_room", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      const responseData = await response.json()
+      console.log(responseData)
+      alert("Data berhasil disimpan")
+      setData({ name: "", nim: "", room: "", startTime: "", endTime: "", date: "" });
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // Handle input change
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setData(prevData => ({
+      ...prevData,
+      [name]: value
+    }));
+  }
+
   return(
     <section className="w-full h-screen flex items-center justify-around bg-campus-room bg-center bg-cover">
       {/* Make bg darker with overlay */}
@@ -16,46 +58,47 @@ export default function LandingPage() {
 
       {/* Form */}
       <div className="z-10 w-auto h-auto flex bg-white rounded-md">
-        {/* Form with Name, NIM, Room, Major, Start Date, End Date */}
-        <form className="flex flex-col p-12">
-          {/* Form Title */}
-          <h2 className="text-2xl font-bold mb-4">Booking Peminjaman Ruangan</h2>
-          {/* Form Inputs */}
-          <label htmlFor="name">Nama Lengkap</label>
-          <input type="text" name="name" id="name" className="w-full border-2 border-gray-300 rounded-md p-2 mb-4" />
-          <label htmlFor="id-number">Nomor Induk Mahasiswa</label>
-          <input type="text" name="id-number" id="id-number" className="w-full border-2 border-gray-300 rounded-md p-2 mb-4" />
-          {/* Dropdown of Room and Major side by side */}
-          <div className="flex justify-between w-full">
-            <div className="flex flex-col w-1/2 mr-6">
-              <label htmlFor="room">Ruangan</label>
-              <select name="room" id="room" className="border-2 border-gray-300 rounded-md p-2 mb-4">
-                <option value="room-1">Ruangan 1</option>
-                <option value="room-2">Ruangan 2</option>
-                <option value="room-3">Ruangan 3</option>
-              </select>
+        {/* Form with Name, NIM, Room, Start Time, End time, and Date */}
+        <form className="flex flex-col p-12" onSubmit={submitData}>
+          <h2 className="text-2xl font-bold mb-6">Peminjaman Ruangan</h2>
+          {/* Name NIM Side by side */}
+          <div className="flex">
+            <div className="flex flex-col mr-4">
+              <label className="text-sm font-bold mb-2">Nama</label>
+              <input className="border border-gray-400 rounded-md p-2" type="text" name="name" placeholder="Nama" value={data.name} onChange={handleInputChange} />
             </div>
-            <div className="flex flex-col w-1/2">
-              <label htmlFor="major">Jurusan</label>
-              <select name="major" id="major" className="border-2 border-gray-300 rounded-md p-2 mb-4">
-                <option value="major-1">Jurusan 1</option>
-                <option value="major-2">Jurusan 2</option>
-                <option value="major-3">Jurusan 3</option>
-              </select>
+            <div className="flex flex-col">
+              <label className="text-sm font-bold mb-2">NIM</label>
+              <input className="border border-gray-400 rounded-md p-2" type="text" name="nim" placeholder="NIM" value={data.nim} onChange={handleInputChange} />
             </div>
           </div>
-          {/* Make Date Side by Side */}
-          <div className="flex justify-between w-full">
-            <div className="flex flex-col w-1/2 mr-6">
-              <label htmlFor="start-date">Tanggal Mulai</label>
-              <input type="date" name="start-date" id="start-date" className="border-2 border-gray-300 rounded-md p-2 mb-4" />
+          {/* Room */}
+          <div className="flex flex-col mt-4">
+            <label className="text-sm font-bold mb-2">Ruangan</label>
+            <select className="border border-gray-400 rounded-md p-2" name="room" value={data.room} onChange={handleInputChange}>
+              <option value="room1">Room 1</option>
+              <option value="room2">Room 2</option>
+              <option value="room3">Room 3</option>
+            </select>
+          </div>
+          {/* StartTime EndTime Side by Side */}
+          <div className="flex mt-4">
+            <div className="flex flex-col mr-4">
+              <label className="text-sm font-bold mb-2">Waktu Mulai</label>
+              <input className="border border-gray-400 rounded-md p-2" type="time" name="startTime" value={data.startTime} onChange={handleInputChange} />
             </div>
-            <div className="flex flex-col w-1/2">
-              <label htmlFor="end-date">Tanggal Selesai</label>
-              <input type="date" name="end-date" id="end-date" className="border-2 border-gray-300 rounded-md p-2 mb-4" />
+            <div className="flex flex-col">
+              <label className="text-sm font-bold mb-2">Waktu Selesai</label>
+              <input className="border border-gray-400 rounded-md p-2" type="time" name="endTime" value={data.endTime} onChange={handleInputChange} />
             </div>
           </div>
-          <button type="submit" className="bg-uin-green text-white rounded-sm p-4">Pinjam Ruangan</button>
+          {/* Date */}
+          <div className="flex flex-col mt-4">
+            <label className="text-sm font-bold mb-2">Tanggal</label>
+            <input className="border border-gray-400 rounded-md p-2" type="date" name="date" value={data.date} onChange={handleInputChange} />
+          </div>
+          {/* Submit Button */}
+          <button className="bg-uin-green text-white rounded-md p-4 px-12 mt-6" type="submit">Submit</button>
         </form>
       </div>
     </section>
